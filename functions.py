@@ -1,5 +1,6 @@
 import random
 import time
+from tabulate import tabulate
 
 operators=['+','-','*','/']
 time_full = time.ctime()[11:19]
@@ -17,11 +18,10 @@ class Session:
 class ScorePoints:
     score = []
 
-def report():
+def report(): #NOT in use
     
     ques = list(Session.qna_record.keys())
     ans = list(Session.qna_record.values())
-    #ans_u = Session.qna_record.values()[1]
     marks = ScorePoints.score
     print("""
                                         REPORT
@@ -37,3 +37,46 @@ Sr.No.      Question       Computer's Calculation        User's Answer         P
              
         print("""
 {}          {}                 {}                         {}                   {}""".format(i,d1,d2,d3,d4))
+    
+def report_tab():
+    ques = list(Session.qna_record.keys())
+    ans = list(Session.qna_record.values())
+    marks = ScorePoints.score
+
+    srno =[]
+    quest =[]
+    comp =[]
+    user =[]
+    marksl=[]
+    for i in range(len(Session.qna_record)):
+        srno.append(i)
+        quest.append(ques[i])
+        comp.append(ans[i][0])
+        user.append(ans[i][1])
+        marksl.append(marks[i])
+
+    #CHECK
+    if len(srno)==len(quest)==len(comp)==len(user)==len(marksl):
+        pass
+    else:
+        print(srno,quest,comp,user,marksl,"list len not satisfied")
+    #Check pass
+
+    data = []
+    for n in range(len(srno)):
+        data_form = [srno[n],quest[n],comp[n],user[n],marksl[n]]
+        data.append(data_form)
+        
+    print("""
+                                    REPORT
+                                    ------
+""")
+    headers = ['Srno','Question',"Computer's calculation","User's answer","Points"]
+    print(tabulate(data,headers = headers))    
+    
+def report_file(name):
+    location = "C:\\Users\\UPLC\\Desktop\\"
+    file_name = f"{name}'s_RMG_Report_{time_full}"
+    file = open(location+file_name+'.txt','w')
+    file.write("Sr.No.      Question       Computer's Calculation        User's Answer         Points")
+    pass
